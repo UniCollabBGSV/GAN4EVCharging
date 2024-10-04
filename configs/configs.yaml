@@ -1,0 +1,94 @@
+--- 
+### Regression model ###
+regressor:
+  data:
+    acn_office: data//acn_office//df_base_atk_None_0_0_None.csv
+    acn_jpl: data//acn_jpl//df_base_atk_None_0_0_None.csv
+    acn_caltech: data//acn_caltech//df_base_atk_None_0_0_None.csv
+  parammeters:
+    acn_office: {'criterion': 'squared_error', 'max_depth': 14, 'min_samples_split': 2, 'min_samples_leaf': 1, 'oob_score': False, 'ccp_alpha': 0.0, 'max_samples': 0.8, 'n_estimators': 100, 'random_state': 1234, 'warm_start': False}
+    acn_caltech: {'criterion': 'squared_error', 'max_depth': 12, 'min_samples_split': 2, 'min_samples_leaf': 1,  'oob_score': False, 'ccp_alpha': 0.0, 'max_samples': 0.8, 'n_estimators': 100, 'random_state': 1234, 'warm_start': False}
+    acn_jpl: {'criterion': 'squared_error', 'max_depth': 10, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 0.8,  'oob_score': False, 'ccp_alpha': 0.0, 'max_samples': 0.8, 'n_estimators': 100, 'random_state': 1234, 'warm_start': False}
+  flag:
+    acn_office: 16
+    acn_caltech: 32
+    acn_jpl: 40
+### ML-Based IDS ###
+ML_Based_IDS:
+  models:
+    acn_office:
+      - models//ML_models//acn_office//localoutlierfactor.pkl
+      - models//ML_models//acn_office//multilayerperceptron_retrain_attack.pkl
+      - models//ML_models//acn_office//multilayerperceptron_retrain_normal.pkl
+      - models//ML_models//acn_office//multilayerperceptron.pkl
+      - models//ML_models//acn_office//randomforestclassifier_retrain_attack.pkl
+      - models//ML_models//acn_office//randomforestclassifier_retrain_normal.pkl
+      - models//ML_models//acn_office//randomforestclassifier.pkl
+    acn_caltech:
+      - models//ML_models//acn_caltech//localoutlierfactor.pkl
+      - models//ML_models//acn_caltech//multilayerperceptron_retrain_attack.pkl
+      - models//ML_models//acn_caltech//multilayerperceptron_retrain_normal.pkl
+      - models//ML_models//acn_caltech//multilayerperceptron.pkl
+      - models//ML_models//acn_caltech//randomforestclassifier_retrain_attack.pkl
+      - models//ML_models//acn_caltech//randomforestclassifier_retrain_normal.pkl
+      - models//ML_models//acn_caltech//randomforestclassifier.pkl
+    acn_jpl:
+      - models//ML_models//acn_jpl//localoutlierfactor.pkl
+      - models//ML_models//acn_jpl//multilayerperceptron_retrain_attack.pkl
+      - models//ML_models//acn_jpl//multilayerperceptron_retrain_normal.pkl
+      - models//ML_models//acn_jpl//multilayerperceptron.pkl
+      - models//ML_models//acn_jpl//randomforestclassifier_retrain_attack.pkl
+      - models//ML_models//acn_jpl//randomforestclassifier_retrain_normal.pkl
+      - models//ML_models//acn_jpl//randomforestclassifier.pkl
+### LSTM GAN model ###
+LSTMGAN:
+  data:
+    acn_office:
+      - data//acn_office//df_base_atk_None_0.2_0.2_(0.0, 0.8, 1.2, 2.0).part1.csv
+      - data//acn_office//df_base_atk_None_0.2_0.2_(0.0, 0.8, 1.2, 2.0).part2.csv
+      - data//acn_office//df_base_atk_None_0_0_None.part1.csv
+    acn_caltech:
+      - data//acn_caltech//df_base_atk_None_0.2_0.2_(0.0, 0.8, 1.2, 2.0).part1.csv
+      - data//acn_caltech//df_base_atk_None_0.2_0.2_(0.0, 0.8, 1.2, 2.0).part2.csv
+      - data//acn_caltech//df_base_atk_None_0_0_None.part1.csv
+    acn_jpl:
+      - data//acn_jpl//df_base_atk_None_0.2_0.2_(0.0, 0.8, 1.2, 2.0).part1.csv
+      - data//acn_jpl//df_base_atk_None_0.2_0.2_(0.0, 0.8, 1.2, 2.0).part2.csv
+      - data//acn_jpl//df_base_atk_None_0_0_None.part1.csv
+  generator: 
+    acn_office: 
+      attack:
+        - models//generator//acn_office//attack//generator_lof.pt
+        - models//generator//acn_office//attack//generator_mlp.pt
+        - models//generator//acn_office//attack//generator_rnd.pt
+      normal:
+        - models//generator//acn_office//normal//generator_lof.pt
+        - models//generator//acn_office//normal//generator_mlp.pt
+        - models//generator//acn_office//normal//generator_rnd.pt
+    acn_caltech: 
+      attack:
+        - models//generator//acn_caltech//attack//generator_lof.pt
+        - models//generator//acn_caltech//attack//generator_mlp.pt
+        - models//generator//acn_caltech//attack//generator_rnd.pt
+      normal:
+        - models//generator//acn_caltech//normal//generator_lof.pt
+        - models//generator//acn_caltech//normal//generator_mlp.pt
+        - models//generator//acn_caltech//normal//generator_rnd.pt
+    acn_jpl: 
+      attack:
+        - models//generator//acn_jpl//attack//generator_lof.pt
+        - models//generator//acn_jpl//attack//generator_mlp.pt
+        - models//generator//acn_jpl//attack//generator_rnd.pt
+      normal:
+        - models//generator//acn_jpl//normal//generator_lof.pt
+        - models//generator//acn_jpl//normal//generator_mlp.pt
+        - models//generator//acn_jpl//normal//generator_rnd.pt
+  parammeters:
+    latent_dim: 100
+    len_session: 200
+    acn_office:
+      batch_size: 32
+    acn_caltech:
+      batch_size: 64
+    acn_jpl:
+      batch_size: 128
